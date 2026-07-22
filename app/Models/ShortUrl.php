@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 
 class ShortUrl extends Model
 {
@@ -57,5 +58,13 @@ class ShortUrl extends Model
     public function clicks(): HasMany
     {
         return $this->hasMany(Click::class);
+    }
+
+    /**
+     * Metodo para gerar um código curto aleatório
+     */
+    public static function generateShortCode(): string
+    {
+        return Str::random(6);
     }
 }
