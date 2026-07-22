@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('short-urls', [ShortUrlController::class, 'index']);
 Route::get('short-urls/{short_url}', [ShortUrlController::class, 'show']);
-Route::post('short-urls/{short_url}', [ShortUrlController::class, 'store']);
+Route::post('short-urls', [ShortUrlController::class, 'store']);
 Route::put('short-urls/{short_url}', [ShortUrlController::class, 'update']);
 Route::patch('short-urls/{short_url}', [ShortUrlController::class, 'update']);
 Route::delete('short-urls/{short_url}', [ShortUrlController::class, 'destroy']);

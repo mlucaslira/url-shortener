@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Models\ShortUrl;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreShortUrlRequest;
+use App\Http\Requests\UpdateShortUrlRequest;
+use App\Http\Resources\ShortUrlResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Resources\ShortUrlResource;
 
 class ShortUrlController extends Controller
 {
@@ -22,7 +23,7 @@ class ShortUrlController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(): JsonResponse
+    public function store(StoreShortUrlRequest $request): JsonResponse
     {
         return response()->json(['endpoint' => 'store']);
     }
@@ -38,7 +39,7 @@ class ShortUrlController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(): JsonResponse
+    public function update(UpdateShortUrlRequest $request): JsonResponse
     {
         return response()->json(['endpoint' => 'update']);
     }
