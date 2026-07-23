@@ -27,7 +27,34 @@ class StoreShortUrlRequest extends FormRequest
                 'required',
                 'string',
                 'url',
-            ]
+            ],
+
+            'short_code' => [
+                'nullable',
+                'string',
+                'alpha_dash',
+                'max:30',
+            ],
+            'title' => [
+                'nullable',
+                'string',
+                'max:122',
+            ],
+            'description' => [
+                'nullable',
+                'string',
+                'max:500',
+            ],
+            'redirect_delay' => [
+                'nullable',
+                'integer',
+                'min:0',
+                'max:10',
+            ],
+            'expires_at' => [
+                'nullable',
+                'date'
+            ],
         ];
     }
 }

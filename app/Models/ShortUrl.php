@@ -17,18 +17,13 @@ class ShortUrl extends Model
      * Campos que podem ser preenchidos em massa.
      */
     protected $fillable = [
-        'user_id',
         'original_url',
         'short_code',
         'title',
         'description',
-        'favicon_url',
-        'is_custom',
-        'is_active',
-        'clicks',
-        'last_clicked_at',
         'redirect_delay',
         'expires_at',
+        'is_custom',
     ];
 
     /**
@@ -65,6 +60,11 @@ class ShortUrl extends Model
      */
     public static function generateShortCode(): string
     {
-        return Str::random(6);
+        do {
+            $shortCode = Str::random(6);
+        } while (
+            self::where('short_code', $shortCode)->exists()
+        );
+        return $shortCode;
     }
 }

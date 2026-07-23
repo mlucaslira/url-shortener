@@ -8,6 +8,7 @@ use App\Http\Requests\StoreShortUrlRequest;
 use App\Http\Requests\UpdateShortUrlRequest;
 use App\Http\Resources\ShortUrlResource;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
 class ShortUrlController extends Controller
@@ -17,7 +18,8 @@ class ShortUrlController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json(['endpoint' => 'index']);
+        $shortUrls = ShortUrl::all();
+        return response()->json($shortUrls);
     }
 
     /**
@@ -25,30 +27,54 @@ class ShortUrlController extends Controller
      */
     public function store(StoreShortUrlRequest $request): JsonResponse
     {
-        return response()->json(['endpoint' => 'store']);
+        $data = $request->validated();
+        
+        $isCustom = ! empty($data['short_code']);
+
+        if (! $isCustom) {
+            $data['short_code'] = ShortUrl::generateShortCode();
+        }
+
+        $data['is_custom'] = $isCustom;
+        $shortUrl = ShortUrl::create($data);
+
+        return response()->json($shortUrl, 201);
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(): JsonResponse
+    public function show(int $id): JsonResponse
     {
-        return response()->json(['endpoint' => 'show']);
+        $shortUrl = ShortUrl::FindOrFail($id);
+        
+        return response()->json($shortUrl);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateShortUrlRequest $request): JsonResponse
+    public function update(UpdateShortUrlRequest $request, int $id): JsonResponse
     {
-        return response()->json(['endpoint' => 'update']);
+        $shortUrl = ShortUrl::FindorFail($id);
+
+        $data = $request->validated();
+
+        $shortUrl->update($data);
+
+        return response()->json($shortUrl);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(): JsonResponse
+    public function destroy(int $id): Response
     {
-        return response()->json(['endpoint' => 'destroy']);
+        $shortUrl = ShortUrl::FindOrFail($id);
+
+        $shortUrl->delete();
+
+        return response()->noContent();
     }
 }
