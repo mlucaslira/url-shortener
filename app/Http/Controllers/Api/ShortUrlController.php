@@ -16,16 +16,16 @@ class ShortUrlController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index()
     {
         $shortUrls = ShortUrl::all();
-        return response()->json($shortUrls);
+        return ShortUrlResource::collection($shortUrls);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreShortUrlRequest $request): JsonResponse
+    public function store(StoreShortUrlRequest $request)
     {
         $data = $request->validated();
         
@@ -38,24 +38,24 @@ class ShortUrlController extends Controller
         $data['is_custom'] = $isCustom;
         $shortUrl = ShortUrl::create($data);
 
-        return response()->json($shortUrl, 201);
+        return (new ShortUrlResource($shortUrl))->response()->setStatusCode(201);
 
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(int $id): JsonResponse
+    public function show(int $id)
     {
         $shortUrl = ShortUrl::FindOrFail($id);
         
-        return response()->json($shortUrl);
+        return new ShortUrlResource($shortUrl);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateShortUrlRequest $request, int $id): JsonResponse
+    public function update(UpdateShortUrlRequest $request, int $id)
     {
         $shortUrl = ShortUrl::FindorFail($id);
 
@@ -63,13 +63,13 @@ class ShortUrlController extends Controller
 
         $shortUrl->update($data);
 
-        return response()->json($shortUrl);
+        return new ShortUrlResource($shortUrl);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id): Response
+    public function destroy(int $id)
     {
         $shortUrl = ShortUrl::FindOrFail($id);
 
