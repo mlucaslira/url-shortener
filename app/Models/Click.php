@@ -13,7 +13,6 @@ class Click extends Model
      * Campos que podem ser preenchidos em massa.
      */
     protected $fillable = [
-        'short_url_id',
         'ip',
         'user_agent',
         'referrer',
